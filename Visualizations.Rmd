@@ -12,6 +12,8 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
+
 ```{r readLibraries, echo = FALSE, message=FALSE, warning=FALSE}
 require(dplyr)
 require(ggplot2)
@@ -28,8 +30,16 @@ require(ca)
 require(mlr)
 require(knitr)
 require(kableExtra)
-
 ```
 
+```{r readData, echo = FALSE, message = FALSE, warning = FALSE }
+
+fileDataName <- "BlackFriday.csv"
+pathData <- file.path(getwd(), "data")
+fileData <- file.path(pathData, fileDataName)
+
+data <- read.csv(file = fileData, header = TRUE, sep = ",")
+descriptionsFeatures <- DescribeVariables(data)
 
 
+```
