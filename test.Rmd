@@ -1,0 +1,35 @@
+---
+title: "Visualizations"
+author: "Monika Konarska"
+date: "27 kwietnia 2019"
+output: github_document
+
+---
+
+![](https://www.thesierraleonetelegraph.com/wp-content/uploads/2018/11/black-friday-sale.jpg){width=500px}
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r readLibraries, echo = FALSE, message=FALSE, warning=FALSE}
+require(dplyr)
+require(ggplot2)
+require(GGally)
+require(randomForest)
+require(tree)
+require(scales)
+require(alluvial)
+require(ggalluvial)
+require(arules)
+require(arulesViz)
+require(tidyverse)
+require(ca)
+require(mlr)
+require(knitr)
+require(kableExtra)
+
+```
+
+
+
