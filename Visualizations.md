@@ -195,7 +195,8 @@ Checking for NA values in columns we can see that the column *Product_Category_2
 ## Purchase
 <br/>
 <br/>
-![](Visualizations_files/figure-html/visualizationsData-1.png)<!-- -->![](Visualizations_files/figure-html/visualizationsData-2.png)<!-- -->![](Visualizations_files/figure-html/visualizationsData-3.png)<!-- -->![](Visualizations_files/figure-html/visualizationsData-4.png)<!-- -->![](Visualizations_files/figure-html/visualizationsData-5.png)<!-- -->![](Visualizations_files/figure-html/visualizationsData-6.png)<!-- -->
+![](Visualizations_files/figure-html/visualizationsData-1.png)<!-- -->  
+![](Visualizations_files/figure-html/visualizationsData-2.png)<!-- -->![](Visualizations_files/figure-html/visualizationsData-3.png)<!-- -->![](Visualizations_files/figure-html/visualizationsData-4.png)<!-- -->![](Visualizations_files/figure-html/visualizationsData-5.png)<!-- -->![](Visualizations_files/figure-html/visualizationsData-6.png)<!-- -->
 <br/>
 <br/>
 
