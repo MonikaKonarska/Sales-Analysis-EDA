@@ -1,42 +1,50 @@
-Visualizations
-================
-Monika Konarska
-27 kwietnia 2019
-
 <img src="https://www.thesierraleonetelegraph.com/wp-content/uploads/2018/11/black-friday-sale.jpg" width="500" />
+<br/> <br/>
 
-<table>
+Data structure
+==============
+
+In dataset are 12 columns. The dataset contains different kinds of
+variables - numerical or categorical. I used my function
+`DescribeVariables()` to get more infromations about structure of data.
+You can find code of this function in script prepare\_data\_func.R  
+Here the results: <br/> <br/>
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Table 1: Structure of data
+</caption>
 <thead>
 <tr>
-<th style="text-align:left;">
+<th style="text-align:left;font-weight: bold;">
 variable
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;font-weight: bold;">
 type
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;font-weight: bold;">
 numberOfNa
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;font-weight: bold;">
 p\_numberOfNa
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;font-weight: bold;">
 uniqueValues
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;font-weight: bold;">
 p\_uniqueValues
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;font-weight: bold;">
 zeros
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;font-weight: bold;">
 p\_zeros
 </th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 8cm; font-weight: bold;color: red;">
 User\_ID
 </td>
 <td style="text-align:left;">
@@ -62,7 +70,7 @@ integer
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 8cm; font-weight: bold;color: red;">
 Product\_ID
 </td>
 <td style="text-align:left;">
@@ -88,7 +96,7 @@ factor
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 8cm; font-weight: bold;color: red;">
 Gender
 </td>
 <td style="text-align:left;">
@@ -114,7 +122,7 @@ factor
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 8cm; font-weight: bold;color: red;">
 Age
 </td>
 <td style="text-align:left;">
@@ -140,7 +148,7 @@ factor
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 8cm; font-weight: bold;color: red;">
 Occupation
 </td>
 <td style="text-align:left;">
@@ -166,7 +174,7 @@ integer
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 8cm; font-weight: bold;color: red;">
 City\_Category
 </td>
 <td style="text-align:left;">
@@ -192,7 +200,7 @@ factor
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 8cm; font-weight: bold;color: red;">
 Stay\_In\_Current\_City\_Years
 </td>
 <td style="text-align:left;">
@@ -218,7 +226,7 @@ factor
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 8cm; font-weight: bold;color: red;">
 Marital\_Status
 </td>
 <td style="text-align:left;">
@@ -244,7 +252,7 @@ integer
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 8cm; font-weight: bold;color: red;">
 Product\_Category\_1
 </td>
 <td style="text-align:left;">
@@ -270,7 +278,7 @@ integer
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 8cm; font-weight: bold;color: red;">
 Product\_Category\_2
 </td>
 <td style="text-align:left;">
@@ -296,7 +304,7 @@ NA
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 8cm; font-weight: bold;color: red;">
 Product\_Category\_3
 </td>
 <td style="text-align:left;">
@@ -322,7 +330,7 @@ NA
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 8cm; font-weight: bold;color: red;">
 Purchase
 </td>
 <td style="text-align:left;">
@@ -349,3 +357,81 @@ integer
 </tr>
 </tbody>
 </table>
+<br/> <br/>
+
+Type of variables: *Occupation*, *Product\_Category\_1*,
+*Product\_Category\_2* and *Marital\_Status* is integer. It needed to
+conver types this variables to factor.
+
+    data$Occupation         <- factor(data$Occupation, levels = c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19))
+    data$Product_Category_1 <- factor(data$Product_Category_1, levels = c(1,2,3,4,5,6,7,8,10,11,12,13,15,16,18))
+    data$Product_Category_2 <- factor(data$Product_Category_2, levels = c(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18))
+    data$Product_Category_3 <- factor(data$Product_Category_3, levels = c(3,4,5,6,8,9,10,11,13,14,15,16,17,18))
+    data$Marital_Status     <- factor(data$Marital_Status, levels = c(0,1))
+
+<br/> <br/> Checking for NA values in columns we can see that the column
+*Product\_Category\_2* is fill by 31% of NA values and the column
+*Product\_Category\_3* is fill by 69% NA values. We have got colum
+User\_ID to identify each customer. We have got 3 623 unique products in
+data (*Product\_ID*).
+
+<br/> <br/>
+
+Exploratory Data Analysis
+=========================
+
+<br/> <br/>
+
+Purchase
+--------
+
+<br/> <br/>
+![](Visualizations_files/figure-markdown_strict/visualizationsData-1.png)![](Visualizations_files/figure-markdown_strict/visualizationsData-2.png)![](Visualizations_files/figure-markdown_strict/visualizationsData-3.png)![](Visualizations_files/figure-markdown_strict/visualizationsData-4.png)![](Visualizations_files/figure-markdown_strict/visualizationsData-5.png)![](Visualizations_files/figure-markdown_strict/visualizationsData-6.png)
+<br/> <br/>
+
+Customers
+---------
+
+<br/> <br/> <br/>
+![](Visualizations_files/figure-markdown_strict/plotsCustomers-1.png)![](Visualizations_files/figure-markdown_strict/plotsCustomers-2.png)![](Visualizations_files/figure-markdown_strict/plotsCustomers-3.png)![](Visualizations_files/figure-markdown_strict/plotsCustomers-4.png)![](Visualizations_files/figure-markdown_strict/plotsCustomers-5.png)
+<br/>
+
+Products
+--------
+
+<br/> <br/> <br/>
+
+    ##  [1] "|Product_Category_1 | numberOfProducts| percentage|"
+    ##  [2] "|:------------------|----------------:|----------:|"
+    ##  [3] "|5                  |           148592|  0.2764106|"
+    ##  [4] "|1                  |           138353|  0.2573641|"
+    ##  [5] "|8                  |           112132|  0.2085878|"
+    ##  [6] "|11                 |            23960|  0.0445704|"
+    ##  [7] "|2                  |            23499|  0.0437128|"
+    ##  [8] "|6                  |            20164|  0.0375090|"
+    ##  [9] "|3                  |            19849|  0.0369231|"
+    ## [10] "|4                  |            11567|  0.0215169|"
+
+    ##  [1] "|Product_Category_2 | numberOfProducts| percentage|"
+    ##  [2] "|:------------------|----------------:|----------:|"
+    ##  [3] "|NA                 |           166986|  0.3106271|"
+    ##  [4] "|8                  |            63058|  0.1173004|"
+    ##  [5] "|14                 |            54158|  0.1007446|"
+    ##  [6] "|2                  |            48481|  0.0901843|"
+    ##  [7] "|16                 |            42602|  0.0792482|"
+    ##  [8] "|15                 |            37317|  0.0694170|"
+    ##  [9] "|5                  |            25874|  0.0481308|"
+    ## [10] "|4                  |            25225|  0.0469235|"
+
+    ##  [1] "|Product_Category_3 | numberOfProducts| percentage|"
+    ##  [2] "|:------------------|----------------:|----------:|"
+    ##  [3] "|NA                 |           382393|  0.7113269|"
+    ##  [4] "|16                 |            32148|  0.0598017|"
+    ##  [5] "|15                 |            27611|  0.0513619|"
+    ##  [6] "|14                 |            18121|  0.0337087|"
+    ##  [7] "|17                 |            16449|  0.0305984|"
+    ##  [8] "|5                  |            16380|  0.0304701|"
+    ##  [9] "|8                  |            12384|  0.0230367|"
+    ## [10] "|9                  |            11414|  0.0212323|"
+
+![](Visualizations_files/figure-markdown_strict/products-1.png)
