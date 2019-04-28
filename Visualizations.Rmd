@@ -228,11 +228,12 @@ ggplot(dataCustomer, aes(numberOfTransactions))+
 
 ```
 <br/>
-<br/>
+
+
 ## Products
 <br/>
 <br/>
-
+<br/>
 
 ```{r products, echo = FALSE, message = FALSE, warning = FALSE }
 
