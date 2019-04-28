@@ -1,8 +1,9 @@
 ---
 title: "Visualizations"
 author: "Monika Konarska"
-#output: github_document
-output: html_document
+output:  
+  html_document:
+    keep_md: true
 
 ---
 
@@ -124,7 +125,7 @@ dataCustomer$mostChosenProduct1 <- factor(dataCustomer$mostChosenProduct1, level
 ggplot(data, aes(Purchase))+
   geom_histogram(aes(y=..density..),colour="black", fill="#FF6666",binwidth = 1000)+
   ggtitle("Histogram of purchase")
-
+  
 
 ggplot(data, aes(City_Category, Purchase, fill=City_Category))+
   geom_boxplot( outlier.colour = "red", outlier.shape = 1)+
