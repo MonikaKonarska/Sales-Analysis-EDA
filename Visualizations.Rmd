@@ -1,25 +1,27 @@
 ---
 title: "Visualizations"
 author: "Monika Konarska"
-date: "27 kwietnia 2019"
-output: github_document
+#output: github_document
+output: html_document
 
 ---
 
 ![](https://www.thesierraleonetelegraph.com/wp-content/uploads/2018/11/black-friday-sale.jpg){width=500px}
+<br/>
+<br/>
+
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
+```{r readLibraries, echo = FALSE, message=FALSE, warning=FALSE }
 
-```{r readLibraries, echo = FALSE, message=FALSE, warning=FALSE}
 require(dplyr)
 require(ggplot2)
 require(GGally)
-require(randomForest)
-require(tree)
 require(scales)
 require(alluvial)
 require(ggalluvial)
@@ -30,7 +32,10 @@ require(ca)
 require(mlr)
 require(knitr)
 require(kableExtra)
+source("prepare_data_func.R")
+
 ```
+
 
 ```{r readData, echo = FALSE, message = FALSE, warning = FALSE }
 
@@ -41,5 +46,234 @@ fileData <- file.path(pathData, fileDataName)
 data <- read.csv(file = fileData, header = TRUE, sep = ",")
 descriptionsFeatures <- DescribeVariables(data)
 
+```
+
+# Data structure
+
+In dataset are 12 columns. The dataset contains different kinds of variables - numerical or categorical.
+I used my function `DescribeVariables()` to get more infromations about structure of data. You can find code of this function in script prepare_data_func.R  
+Here the results:
+<br/>
+<br/>
+
+```{r features, echo = FALSE, message = FALSE, warning = FALSE }
+
+kable(descriptionsFeatures, booktabs = T, caption = "Table 1: Structure of data") %>%
+  kable_styling(latex_options = c("striped", "hold_position")) %>%
+  column_spec(1, width = "8cm", color = "red", bold = TRUE) %>%
+  row_spec(0, bold = TRUE)
 
 ```
+<br/>
+<br/>
+
+Type of variables: *Occupation*, *Product_Category_1*, *Product_Category_2* and *Marital_Status* is integer. It needed to conver types this variables to factor.
+
+```{r converTypeVariables, echo = TRUE, message = FALSE, warning = FALSE }
+
+data$Occupation         <- factor(data$Occupation, levels = c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19))
+data$Product_Category_1 <- factor(data$Product_Category_1, levels = c(1,2,3,4,5,6,7,8,10,11,12,13,15,16,18))
+data$Product_Category_2 <- factor(data$Product_Category_2, levels = c(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18))
+data$Product_Category_3 <- factor(data$Product_Category_3, levels = c(3,4,5,6,8,9,10,11,13,14,15,16,17,18))
+data$Marital_Status     <- factor(data$Marital_Status, levels = c(0,1))
+
+```
+
+<br/>
+<br/>
+Checking for NA values in columns we can see that the column *Product_Category_2* is fill by 31% of NA values and the column *Product_Category_3* is fill by 69% NA values. We have got colum User_ID to identify each customer. We have got 3 623 unique products in data (*Product_ID*). 
+
+```{r dataTransformation, echo = FALSE, message = FALSE, warning = FALSE }
+
+theMostChosenProductCustomer <- data %>%
+  select( c("User_ID", "Product_Category_1", "Purchase")) %>%
+  group_by(User_ID, Product_Category_1) %>%
+  add_count(Product_Category_1) %>%
+  group_by(User_ID) %>%
+  slice(which.max(n))%>%
+  plyr::rename(c("n" = "numberOfProduct1", "Product_Category_1" = "mostChosenProduct1", "Purchase" = "allPurchaseMostChosenProduct1")) %>%
+  arrange(desc(numberOfProduct1))
+
+
+dataCustomer <- data %>%
+  select(-c("Product_ID","Product_Category_1","Product_Category_2","Product_Category_3")) %>%
+  dplyr::group_by(User_ID, Gender, Age, Occupation, City_Category, Stay_In_Current_City_Years, Marital_Status) %>%
+  dplyr::summarize(sumOfPurchase = sum(Purchase, na.rm = TRUE),
+                   meanOfPurchase = mean(Purchase, na.rm = TRUE),
+                   medianOfPurchase = median(Purchase),
+                   numberOfTransactions = n(),
+                   minPurchase = min(Purchase),
+                   maxPurchase = max(Purchase)) %>%
+  left_join(theMostChosenProductCustomer, by = "User_ID") 
+  
+dataCustomer$mostChosenProduct1 <- factor(dataCustomer$mostChosenProduct1, levels = c(1,2,3,4,5,6,7,8,10,11,12,13,15,16,18))
+
+```
+<br/>
+<br/>
+
+# Exploratory Data Analysis
+<br/>
+<br/>
+
+## Purchase
+<br/>
+<br/>
+```{r visualizationsData, echo = FALSE, message = FALSE, warning = FALSE}
+
+ggplot(data, aes(Purchase))+
+  geom_histogram(aes(y=..density..),colour="black", fill="#FF6666",binwidth = 1000)+
+  ggtitle("Histogram of purchase")
+
+
+ggplot(data, aes(City_Category, Purchase, fill=City_Category))+
+  geom_boxplot( outlier.colour = "red", outlier.shape = 1)+
+  coord_flip()+
+  labs(title = "Boxplots of Purchase by City Category")+
+  theme(legend.position = "none",
+        plot.title = element_text(hjust = 0.5))
+
+data %>%
+  select(c("Marital_Status", "Stay_In_Current_City_Years", "Purchase")) %>%
+  group_by(Marital_Status, Stay_In_Current_City_Years) %>%
+  summarize(Purchase = dollar(round(sum(Purchase)/1000000, 0), suffix = "mln")) %>%
+  ggplot(aes(x = Marital_Status, y = Purchase, fill = Marital_Status)) +
+  geom_text(aes(label = Purchase), position = position_dodge(width = 0.9), vjust = -1, hjust = 0.5)+
+  geom_bar( stat = "identity", position = "dodge2") +
+  labs(y = "Purchase mln", subtitle = "Stay_In_Current_City_Years") +
+  theme(plot.subtitle = element_text(hjust = 0.5)) +
+  facet_grid( ~ Stay_In_Current_City_Years)
+
+
+ggplot(dataCustomer, aes(x = Gender,y = sumOfPurchase/1000, fill = Gender ))+
+  geom_boxplot()+
+  labs(y = " Customers's purchase in thousands $")+
+  facet_grid( ~ Age)+
+  labs(title = "Age vs Gender")+
+  theme(plot.title = element_text(hjust = 0.5))
+
+
+data %>%
+  select(c("Age", "City_Category", "Purchase", "Gender")) %>%
+  group_by(Age, City_Category, Gender)%>%
+  summarize(Purchase = (round(sum(Purchase)/1000000, 0))) %>%
+  ggplot(aes(y = Purchase, axis1 = Age, axis2 = City_Category)) +
+  geom_alluvium(aes(fill = City_Category), width = 1/13) +
+  geom_stratum(width = 1/13, fill = "black", color = "grey") +
+  geom_label(stat = "stratum", label.strata = TRUE) +
+  scale_x_discrete(limits = c("Age", "City_Category"), expand = c(.05, .05)) +
+  scale_fill_brewer(type = "qual", palette = "Set1") +
+  ggtitle("Purchase  by Age and City Category")
+
+
+data %>% 
+  select(c("Stay_In_Current_City_Years", "City_Category", "Purchase", "Gender")) %>%
+  group_by(Stay_In_Current_City_Years, City_Category,Gender) %>%
+  summarize(Purchase = (round(sum(Purchase)/1000000, 0))) %>%
+  ggplot(aes(y = Purchase, axis1 = Stay_In_Current_City_Years, axis2 = City_Category)) +
+  geom_alluvium(aes(fill = City_Category), width = 1/13)+
+  geom_stratum(width = 1/13, fill = "navy", color = "grey")+
+  geom_label(stat = "stratum", label.strata = TRUE) +
+  scale_x_discrete(limits = c("Stay_In_Current_City_Years", "City_Category"), expand = c(.05, .05)) +
+  scale_fill_brewer(type = "qual", palette = "Set1") +
+  ggtitle("Purchase by Stay_In_Current_City_Years and City Category")+
+  theme(plot.title = element_text(hjust = 0.5))
+
+```
+<br/>
+<br/>
+
+
+
+
+## Customers
+<br/>
+<br/>
+<br/>
+```{r plotsCustomers, echo = FALSE, message = FALSE, warning = FALSE}
+
+ggplot(dataCustomer, aes(numberOfTransactions)) +
+  geom_density(fill = 'cyan') +
+  ggtitle("Density of customers transactions")
+
+
+ggplot(dataCustomer, aes(numberOfTransactions))+
+  geom_density(fill = 'cyan')+
+  facet_wrap( ~ Age) +
+  ggtitle("Density of customers transactions in each group of age")
+  
+
+dataCustomer[ ,c("Age", "numberOfTransactions")] %>%
+  group_by(Age)%>%
+  summarise(sumOfTransactions = sum(numberOfTransactions))%>%
+  ggplot( aes(x = Age, y = sumOfTransactions, fill = Age)) +
+  geom_bar(stat="identity", position = "stack") +
+  labs(title = "Age vs sum of transactions") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+
+dataCustomer %>%
+  select(c("Age", "numberOfTransactions", "Marital_Status", "Gender")) %>%
+  mutate(Marital_Status = paste0("marital status:", Marital_Status)) %>%
+  ggplot( aes(Age, numberOfTransactions, fill=Age))+
+  stat_boxplot(geom="boxplot", position = "dodge" )+
+  facet_grid(Gender ~ Marital_Status)+
+  theme(strip.background = element_rect(colour = "black", fill = "white"))  
+
+
+ggplot(dataCustomer, aes(numberOfTransactions))+
+  geom_density(aes(color = Gender))+
+  theme(legend.position = "none")+
+  facet_wrap( ~ Gender)
+
+```
+<br/>
+<br/>
+## Products
+<br/>
+<br/>
+
+
+```{r products, echo = FALSE, message = FALSE, warning = FALSE }
+
+kable(data %>%
+        select(c("Product_ID", "Product_Category_1")) %>%
+        dplyr::group_by(Product_Category_1)%>%
+        dplyr::summarize(numberOfProducts = n())%>%
+        mutate(percentage = (numberOfProducts/sum(numberOfProducts)))%>%
+        arrange(desc(numberOfProducts))
+      ,format="markdown") %>% head(10)
+
+kable(data %>%
+        select(c("Product_Category_2","Product_ID")) %>%
+        dplyr:: group_by(Product_Category_2) %>%
+        dplyr:: summarise(numberOfProducts = n()) %>%
+        mutate(percentage = numberOfProducts / sum(numberOfProducts)) %>%
+        arrange(desc(numberOfProducts))
+      ,format="markdown")%>% head(10)
+
+kable(data %>%
+        select(c("Product_Category_3","Product_ID")) %>%
+        dplyr:: group_by(Product_Category_3) %>%
+        dplyr:: summarise(numberOfProducts = n()) %>%
+        mutate(percentage = numberOfProducts / sum(numberOfProducts))%>%
+        arrange(desc(numberOfProducts))
+      ,format="markdown")%>% head(10)
+
+
+
+colors<-grDevices::colors()
+
+with(data,
+     spineplot(x=Product_Category_1, y=Age, main="Prefereed Product Category 1 by Age Cutomer", col=sample(colors, 5)))
+
+
+
+```
+
+
+
+
+
+
+
