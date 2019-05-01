@@ -186,25 +186,27 @@ data %>%
 ```
 <br/>
 <br/>
-
-
+<br/>
+<br/>
 
 
 ## Customers
 <br/>
 <br/>
-<br/>
+
 ```{r plotsCustomers, echo = FALSE, message = FALSE, warning = FALSE}
 
 ggplot(dataCustomer, aes(numberOfTransactions)) +
   geom_density(fill = 'cyan') +
-  ggtitle("Density of customers transactions")
+  ggtitle("Density of customers transactions") +
+  theme(plot.title = element_text(hjust = 0.5))
 
 
 ggplot(dataCustomer, aes(numberOfTransactions))+
   geom_density(fill = 'cyan')+
   facet_wrap( ~ Age) +
-  ggtitle("Density of customers transactions in each group of age")
+  ggtitle("Density of customers transactions in each group of age")+
+  theme(plot.title = element_text(hjust = 0.5))
   
 
 dataCustomer[ ,c("Age", "numberOfTransactions")] %>%
@@ -231,6 +233,9 @@ ggplot(dataCustomer, aes(numberOfTransactions))+
   facet_wrap( ~ Gender)
 
 ```
+<br/>
+<br/>
+<br/>
 <br/>
 
 
@@ -275,7 +280,10 @@ with(data,
 
 
 ```
-
+<br/>
+<br/>
+<br/>
+<br/>
 
 
 
