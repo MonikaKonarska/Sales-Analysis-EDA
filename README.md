@@ -63,7 +63,7 @@ For Business it can be very explanatory and clarifies way to show a comparison, 
 ## Contact :+1:
 
 *Linkedin*: https://www.linkedin.com/in/monika-konarska-72bb6ab6/  
-*You can find me at some Meetup Groups :blush:*: https://www.meetup.com/members/185488887/ 
+*You can find me at some Meetup Groups :blush:* https://www.meetup.com/members/185488887/ 
 
 
 
