@@ -54,7 +54,7 @@ For Business it can be very explanatory and clarifies way to show a comparison, 
 
 ### How to run ?
 
-1. Clone this repo.
+1. Clone this repo (Some tips how do this: https://happygitwithr.com/rstudio-git-github.html#clone-the-new-github-repository-to-your-computer-via-rstudio)
 2. Raw data is being kept within this repo (folder data, file BlackFriday.csv)
 3. Data processing, transformations and all plots for code is in .Rmd file
 
