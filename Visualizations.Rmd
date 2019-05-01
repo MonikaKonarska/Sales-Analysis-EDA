@@ -1,6 +1,7 @@
 ---
 title: "Visualizations - sales data"
-output: github_document
+#output: github_document
+output: html_document 
 # output:  
 #   html_document:
 #     keep_md: true
@@ -81,7 +82,6 @@ data$Marital_Status     <- factor(data$Marital_Status, levels = c(0,1))
 ```
 
 <br/>
-<br/>
 Checking for NA values in columns we can see that the column *Product_Category_2* is fill by 31% of NA values and the column *Product_Category_3* is fill by 69% NA values. We have got colum User_ID to identify each customer. We have got 3 623 unique products in data (*Product_ID*). 
 
 ```{r dataTransformation, echo = FALSE, message = FALSE, warning = FALSE }
@@ -112,6 +112,8 @@ dataCustomer$mostChosenProduct1 <- factor(dataCustomer$mostChosenProduct1, level
 ```
 <br/>
 <br/>
+<br/>
+<br/>
 
 # Exploratory Data Analysis
 <br/>
@@ -139,8 +141,8 @@ data %>%
   group_by(Marital_Status, Stay_In_Current_City_Years) %>%
   summarize(Purchase = dollar(round(sum(Purchase)/1000000, 0), suffix = "mln")) %>%
   ggplot(aes(x = Marital_Status, y = Purchase, fill = Marital_Status)) +
-  geom_text(aes(label = Purchase), position = position_dodge(width = 0.9), vjust = -1, hjust = 0.5)+
-  geom_bar( stat = "identity", position = "dodge2") +
+  geom_text(aes(label = Purchase), position = position_dodge(width = 0.7), vjust = -1, hjust = 0.5, size = 3)+
+  geom_bar( stat = "identity", position = "dodge2", width = 0.4) +
   labs(y = "Purchase mln", subtitle = "Stay_In_Current_City_Years") +
   theme(plot.subtitle = element_text(hjust = 0.5)) +
   facet_grid( ~ Stay_In_Current_City_Years)
