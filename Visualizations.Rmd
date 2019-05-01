@@ -1,9 +1,9 @@
 ---
-title: "Visualizations"
-author: "Monika Konarska"
-output:  
-  html_document:
-    keep_md: true
+title: "Visualizations - sales data"
+output: github_document
+# output:  
+#   html_document:
+#     keep_md: true
 
 ---
 
