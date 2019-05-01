@@ -250,15 +250,17 @@ kable(data %>%
         select(c("Product_ID", "Product_Category_1")) %>%
         dplyr::group_by(Product_Category_1)%>%
         dplyr::summarize(numberOfProducts = n())%>%
-        mutate(percentage = (numberOfProducts/sum(numberOfProducts)))%>%
-        arrange(desc(numberOfProducts))
-      ,format="markdown") %>% head(10)
+        mutate(percentage = round(numberOfProducts/sum(numberOfProducts),2))%>%
+        arrange(desc(numberOfProducts)) %>% head(10), format="markdown")  %>%
+  kable_styling( position = "center") %>%
+  column_spec(c(1, 2, 3), width = "8cm") %>%
+  row_spec(0, bold = TRUE)
 
 kable(data %>%
         select(c("Product_Category_2","Product_ID")) %>%
         dplyr:: group_by(Product_Category_2) %>%
         dplyr:: summarise(numberOfProducts = n()) %>%
-        mutate(percentage = numberOfProducts / sum(numberOfProducts)) %>%
+        mutate(percentage = round(numberOfProducts / sum(numberOfProducts),2)) %>%
         arrange(desc(numberOfProducts))
       ,format="markdown")%>% head(10)
 
@@ -268,15 +270,33 @@ kable(data %>%
         dplyr:: summarise(numberOfProducts = n()) %>%
         mutate(percentage = numberOfProducts / sum(numberOfProducts))%>%
         arrange(desc(numberOfProducts))
-      ,format="markdown")%>% head(10)
+      ,format="markdown") %>% head(10)
 
 
 
 colors<-grDevices::colors()
 
 with(data,
-     spineplot(x=Product_Category_1, y=Age, main="Prefereed Product Category 1 by Age Cutomer", col=sample(colors, 5)))
+     spineplot(x = Product_Category_1, y = Age, main = "Prefered Product Category 1 by Age Cutomer", col = sample(colors, 5)))
 
+
+with(data,
+     spineplot(x = Product_Category_1, y = City_Category,
+               main = "Prefered Product Category 1 by City Category", col = sample(colors, 5)))
+
+
+with(data,
+     spineplot(x = Product_Category_1, y = Gender,
+               main = "Prefered Product Category 1 by Gender", col = sample(colors, 5)))
+
+with(data,
+     spineplot(x = Product_Category_1, y = Marital_Status,
+               main = "Prefered Product Category 1 by Marital Status", col = sample(colors, 5)))
+
+
+with(data,
+     spineplot(x = Product_Category_1, y = Stay_In_Current_City_Years,
+               main = "Prefered Product Category 1 by Stay_In_Current_City_Years", col = sample(colors, 5)))
 
 
 ```
