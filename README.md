@@ -37,8 +37,8 @@ This project will focus on a step by step visualisations and get more informatio
 The purpose of the analysis is a study sales consumer behaviors. The dataset is a sample of the transactions made in a retail store. Based on this dataset we can select one or more segments of customers identified to pursue.  
 The main goal of this project is to find some information about customers and do segmentation which group of customers prefer which products and how the money they can spend. It can be helpful to develop more effective sales or marketing strategies.
 
-Dataset of 550 000 observations about the black Friday in a retail store.
-It contains different kinds of variables either numerical or categorical. It contains missing values.</p> [source data!](https://www.kaggle.com/mehdidag/black-friday) 
+Dataset of 550 000 observations about the Black Friday in a retail store.
+It contains different kinds of variables either numerical or categorical. It contains missing values. The source of data [here](https://www.kaggle.com/mehdidag/black-friday).
 
 
 
@@ -50,7 +50,7 @@ For Business it can be very explanatory and clarifies the way to show a comparis
 
 ### How to run ?
 
-1. Clone this repo [some tips here!](https://happygitwithr.com/rstudio-git-github.html#clone-the-new-github-repository-to-your-computer-via-rstudio) 
+1. Clone this repo [(some tips here)](https://happygitwithr.com/rstudio-git-github.html#clone-the-new-github-repository-to-your-computer-via-rstudio) 
 2. Raw data is being kept within this repo [here](data/BlackFriday.csv)
 3. The code of data transformations and plots: [Visualizations.Rmd](Visualizations.Rmd)
 
