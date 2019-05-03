@@ -46,7 +46,7 @@ pathData <- file.path(getwd(), "data")
 fileData <- file.path(pathData, fileDataName)
 
 data <- read.csv(file = fileData, header = TRUE, sep = ",")
-descriptionsFeatures <- DescribeVariables(data)
+descriptionsFeatures <- describe_variables(data)
 
 ```
 
@@ -196,6 +196,23 @@ data %>%
 
 ```{r plotsCustomers, echo = FALSE, message = FALSE, warning = FALSE}
 
+cities <- levels(dataCustomer$City_Category)
+dataCustomer$order <- as.numeric(dataCustomer$City_Category)/100
+
+ggplot( data = dataCustomer, aes(x = factor(order), fill = Gender))+
+  geom_bar(data = subset(dataCustomer, Gender == "F"))+
+  geom_bar(data = subset(dataCustomer ,Gender == "M"), aes(y=..count..*(-1)))+
+  scale_x_discrete(labels = cities) +
+  scale_y_continuous(breaks=seq(-1500,1500,500),labels=abs(seq(-1500,1500,500))) + 
+  xlab("City Category") +
+  coord_flip() +
+  scale_fill_brewer(palette = "Dark2") +
+  ggtitle("Customers by gender in cities") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+
+
+
 ggplot(dataCustomer, aes(numberOfTransactions)) +
   geom_density(fill = 'cyan') +
   ggtitle("Density of customers transactions") +
@@ -252,8 +269,8 @@ kable(data %>%
         dplyr::summarize(numberOfProducts = n())%>%
         mutate(percentage = round(numberOfProducts/sum(numberOfProducts),2))%>%
         arrange(desc(numberOfProducts)) %>% head(10), format="markdown")  %>%
-  kable_styling( position = "center") %>%
-  column_spec(c(1, 2, 3), width = "8cm") %>%
+  kable_styling( "striped", full_width = FALSE, position = "center") %>%
+  column_spec(c(1, 2, 3), width = "4cm") %>%
   row_spec(0, bold = TRUE)
 
 kable(data %>%
@@ -261,16 +278,21 @@ kable(data %>%
         dplyr:: group_by(Product_Category_2) %>%
         dplyr:: summarise(numberOfProducts = n()) %>%
         mutate(percentage = round(numberOfProducts / sum(numberOfProducts),2)) %>%
-        arrange(desc(numberOfProducts))
-      ,format="markdown")%>% head(10)
+        arrange(desc(numberOfProducts)) %>% head(10), format="markdown")%>% 
+  kable_styling( "striped", full_width = FALSE, position = "center") %>%
+  column_spec(c(1, 2, 3), width = "4cm") %>%
+  row_spec(0, bold = TRUE)
 
 kable(data %>%
         select(c("Product_Category_3","Product_ID")) %>%
         dplyr:: group_by(Product_Category_3) %>%
         dplyr:: summarise(numberOfProducts = n()) %>%
-        mutate(percentage = numberOfProducts / sum(numberOfProducts))%>%
-        arrange(desc(numberOfProducts))
-      ,format="markdown") %>% head(10)
+        mutate(percentage = round(numberOfProducts / sum(numberOfProducts),2)) %>%
+        arrange(desc(numberOfProducts)) %>% head(10), format="markdown") %>% 
+  kable_styling( "striped", full_width = FALSE, position = "center") %>%
+  column_spec(c(1, 2, 3), width = "4cm") %>%
+  row_spec(0, bold = TRUE)
+
 
 
 
@@ -297,6 +319,30 @@ with(data,
 with(data,
      spineplot(x = Product_Category_1, y = Stay_In_Current_City_Years,
                main = "Prefered Product Category 1 by Stay_In_Current_City_Years", col = sample(colors, 5)))
+
+
+## test
+
+dataCustomer %>% select(c("Age", "Gender")) %>%
+  group_by(Age, Gender) %>%
+  count() %>%
+  ggplot( aes(x = Age, y = n, fill = Gender))+
+  geom_bar( data =. %>% filter(Gender == "F"), stat = "identity") +
+  geom_bar( data =. %>% filter(Gender == "M"), stat = "identity") +
+  scale_y_continuous(breaks = seq(-1500, 1500, 500))+
+  coord_flip()
+
+
+                     labels = paste0(as.character(c(seq(1.5, 0, -0.5), seq(0.5, 1.5, 0.5)))))+
+  coord_flip()
+    
+    
+    labels = paste0(as.character(c(seq(1500, 0, -500), seq(500, 1500, 500))), "m")) + 
+  coord_flip()
+
+
+
+
 
 
 ```
