@@ -1,19 +1,27 @@
-<br/> <br/> \# Market Basket Analysis \#\# APRIORI Algorithm Using this
-Apriori algorithm we can predict what products customers buy together.
-This is Associations Rule Mining. The purpose of using Associations Rule
-Mining is found in retailing, clustering and classification.
+<br/> <br/>
+
+<span style="color:blue"> *Market Basket Analysis* </span>
+----------------------------------------------------------
+
+### **Apriori Algorithm**
+
+Using this Apriori algorithm we can predict what products customers buy
+together. This is Associations Rule Mining. The purpose of using
+Associations Rule Mining is found in retailing, clustering and
+classification.
 
 Store owners can use association rules for numerous marketing strategies
-for example: - changing the store layout, - customer behavior analysis,
-- what are the trending items customers buy?
+for example:  
+\* changing the store layout,  
+\* customer behavior analysis,  
+\* what are the trending items customers buy?
 
-Application in R
-----------------
+### Application in R
 
 Firstly we have to get information about transactions from data. Each
 transaction shows items bought in that transaction and wchich User ID.
 
-### Prepare data
+#### Prepare data
 
 First it's important to convert data frame into transaction data
 (transaction object --&gt; `basket`).
