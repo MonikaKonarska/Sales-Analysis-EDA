@@ -3,19 +3,7 @@ title: "Visualizations - sales data"
 output: md_document
 always_allow_html: yes
 #output: html_document 
-
 ---
-
-![](https://www.thesierraleonetelegraph.com/wp-content/uploads/2018/11/black-friday-sale.jpg){width=500px}
-<br/>
-<br/>
-
-
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 
 ```{r readLibraries, echo = FALSE, message=FALSE, warning=FALSE }
 
