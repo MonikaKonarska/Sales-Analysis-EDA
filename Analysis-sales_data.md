@@ -31,6 +31,9 @@ First it's important to convert data frame into transaction data
     sparse_matix <- split(products, users)
     basket       <- as(sparse_matix, "transactions")
 
+Here some information about new object `basket`. There are 5891
+transactions (rows) and 3623 items (columns).
+
     summary(basket)
 
     ## transactions as itemMatrix in sparse format with
@@ -122,3 +125,79 @@ First it's important to convert data frame into transaction data
     ## 1       1000001
     ## 2       1000002
     ## 3       1000003
+
+<br/> Below the *Absolute Item Frequency Plot* presents top 10 highest
+frequency products bought.
+![](Analysis-sales_data_files/figure-markdown_strict/analysisOfAproriPlots-1.png)
+<br/>
+
+#### Generating rules
+
+Create rules by function `apriori`. See the strongest association rules.
+There are 6079 rules. The rules inform what customers purchase if they
+buy another product.
+
+*Support* and *Confidence* measure how interesting the rule is.  
+*Lift* gives information about correlation between for example Produkct
+1 and Product2 in the rule Product1=&gt; Product2.  
+This measure shows how one item (Product1) effects the onther item
+(Product2).
+
+    rules <- apriori(data = basket, parameter = list(support = 0.004, confidence = 0.75) )
+
+    ## Apriori
+    ## 
+    ## Parameter specification:
+    ##  confidence minval smax arem  aval originalSupport maxtime support minlen
+    ##        0.75    0.1    1 none FALSE            TRUE       5   0.004      1
+    ##  maxlen target   ext
+    ##      10  rules FALSE
+    ## 
+    ## Algorithmic control:
+    ##  filter tree heap memopt load sort verbose
+    ##     0.1 TRUE TRUE  FALSE TRUE    2    TRUE
+    ## 
+    ## Absolute minimum support count: 23 
+    ## 
+    ## set item appearances ...[0 item(s)] done [0.00s].
+    ## set transactions ...[3623 item(s), 5891 transaction(s)] done [0.21s].
+    ## sorting and recoding items ... [2593 item(s)] done [0.02s].
+    ## creating transaction tree ... done [0.00s].
+    ## checking subsets of size 1 2 3 done [9.12s].
+    ## writing ... [6079 rule(s)] done [0.92s].
+    ## creating S4 object  ... done [0.18s].
+
+<br/>
+
+#### **Results**
+
+Look at the top 10 sorted rules by decreasing metric *LIFT*.  
+The first rule is: If customers buy product P00156442 and P00219042 they
+will also buy product P00304142 in 80 % in the cases.  
+The second rule is: If customers buy product P00244242 and P00259042
+they also buy product P00244142 in 77% in the cases, etc.
+
+    ##      lhs                      rhs         support     confidence lift    
+    ## [1]  {P00156442,P00219042} => {P00304142} 0.004243762 0.8064516  17.66099
+    ## [2]  {P00244242,P00259042} => {P00244142} 0.004074011 0.7741935  16.28848
+    ## [3]  {P00152742,P00244242} => {P00244142} 0.005092514 0.7692308  16.18407
+    ## [4]  {P00125042,P00193942} => {P00180342} 0.004243762 0.7575758  15.88213
+    ## [5]  {P00192942,P00244242} => {P00244142} 0.004583263 0.7500000  15.77946
+    ## [6]  {P00226342,P00244342} => {P00124842} 0.004243762 0.7575758  14.35009
+    ## [7]  {P00130642,P00244342} => {P00124842} 0.004074011 0.7500000  14.20659
+    ## [8]  {P00218042,P00268442} => {P00217942} 0.004243762 0.7812500  14.16106
+    ## [9]  {P00116242,P00281942} => {P00246142} 0.005092514 0.7500000  13.85031
+    ## [10] {P00233942,P00334042} => {P00246142} 0.004583263 0.7500000  13.85031
+    ##      count
+    ## [1]  25   
+    ## [2]  24   
+    ## [3]  30   
+    ## [4]  25   
+    ## [5]  27   
+    ## [6]  25   
+    ## [7]  24   
+    ## [8]  25   
+    ## [9]  30   
+    ## [10] 27
+
+<br/>

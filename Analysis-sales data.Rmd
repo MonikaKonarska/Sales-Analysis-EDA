@@ -1,7 +1,6 @@
 ---
 title: "Analysis- sales data"
-#output: github_document
-output: html_document 
+output: md_document 
 ---
 
 ```{r readLibraries, echo = FALSE, message=FALSE, warning=FALSE }
@@ -37,7 +36,39 @@ products     <- data$Product_ID
 users        <- as.factor(data$User_ID)
 sparse_matix <- split(products, users)
 basket       <- as(sparse_matix, "transactions")
+```
 
+Here some information about new object `basket`. There are 5891 transactions (rows) and 3623 items (columns).
+```{r objectAprori, echo = TRUE, message = FALSE, warning = FALSE }
 summary(basket)
 ```
+<br/>
+Below the *Absolute Item Frequency Plot* presents top 10 highest frequency products bought.
+```{r analysisOfAproriPlots, echo = FALSE, message = FALSE, warning = FALSE }
+colors<-grDevices::colors()
+itemFrequencyPlot(basket, topN = 10, type = "absolute", col = colors[10:19], main = "Absolute Item Frequency Plot")
+```
+<br/>
+
+#### Generating rules
+Create rules by function `apriori`. 
+See the strongest association rules. There are 6079 rules. The rules inform what customers purchase if they buy another product.
+
+*Support* and *Confidence* measure how interesting the rule is.  
+*Lift* gives information about correlation between for example Produkct 1 and Product2 in the rule Product1=> Product2.  
+This measure shows how one item (Product1) effects the onther item (Product2).
+```{r generatingRules, echo = TRUE, message = FALSE, warning = FALSE }
+rules <- apriori(data = basket, parameter = list(support = 0.004, confidence = 0.75) )
+```
+<br/>
+
+#### **Results**
+
+Look at the top 10 sorted rules by decreasing metric *LIFT*.   
+The first rule is: If customers buy product P00156442 and P00219042 they will also buy product P00304142 in 80 % in the cases.  
+The second rule is: If customers buy product P00244242 and P00259042 they also buy product P00244142 in 77% in the cases, etc.  
+```{r results, echo = FALSE, message = FALSE, warning = FALSE}
+inspect(sort(rules, by = "lift")[1:10, ])
+```
+<br/>
 
