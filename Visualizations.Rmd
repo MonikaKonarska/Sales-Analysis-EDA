@@ -1,10 +1,8 @@
 ---
 title: "Visualizations - sales data"
-#output: github_document
-output: html_document 
-# output:  
-#   html_document:
-#     keep_md: true
+output: md_document
+always_allow_html: yes
+#output: html_document 
 
 ---
 
@@ -32,6 +30,7 @@ require(arulesViz)
 require(tidyverse)
 require(ca)
 require(mlr)
+library(data.table)
 require(knitr)
 require(kableExtra)
 source("prepare_data_func.R")
@@ -77,8 +76,10 @@ data$Occupation         <- factor(data$Occupation,         levels = sort(unique(
 data$Product_Category_1 <- factor(data$Product_Category_1, levels = sort(unique(data$Product_Category_1)))
 data$Product_Category_2 <- factor(data$Product_Category_2, levels = sort(unique(data$Product_Category_2)))
 data$Product_Category_3 <- factor(data$Product_Category_3, levels = sort(unique(data$Product_Category_3)))
-data$Marital_Status     <- factor(data$Marital_Status,     levels = sort(unique(data$Marital_Status))
+data$Marital_Status     <- factor(data$Marital_Status,     levels = sort(unique(data$Marital_Status)))
 
+
+save(data, file = file.path(pathData, "data.Rdata"))
 ```
 
 <br/>
@@ -195,23 +196,20 @@ data %>%
 <br/>
 
 ```{r plotsCustomers, echo = FALSE, message = FALSE, warning = FALSE}
-
-cities <- levels(dataCustomer$City_Category)
-dataCustomer$order <- as.numeric(dataCustomer$City_Category)/100
-
-ggplot( data = dataCustomer, aes(x = factor(order), fill = Gender))+
+ggplot( data = dataCustomer, aes(x = Age, fill = Gender))+
   geom_bar(data = subset(dataCustomer, Gender == "F"))+
   geom_bar(data = subset(dataCustomer ,Gender == "M"), aes(y=..count..*(-1)))+
-  scale_x_discrete(labels = cities) +
-  scale_y_continuous(breaks=seq(-1500,1500,500),labels=abs(seq(-1500,1500,500))) + 
-  xlab("City Category") +
+  scale_y_continuous(breaks = seq(-1500,1500,500),labels=abs(seq(-1500,1500,500))) + 
   coord_flip() +
   scale_fill_brewer(palette = "Dark2") +
-  ggtitle("Customers by gender in cities") +
+  ggtitle("Pyramid plot of Age and Gender Customers") +
   theme(plot.title = element_text(hjust = 0.5))
 
 
-
+ggplot(dataCustomer, aes(x = Gender, y=count(), fill = Marital_Status))+
+  geom_bar(aes(y = (..count..)/sum(..count..))) +
+  scale_y_continuous(labels = percent)+
+  ylab("")
 
 ggplot(dataCustomer, aes(numberOfTransactions)) +
   geom_density(fill = 'cyan') +
@@ -321,38 +319,5 @@ with(data,
                main = "Prefered Product Category 1 by Stay_In_Current_City_Years", col = sample(colors, 5)))
 
 
-## test
-
-dataCustomer %>% select(c("Age", "Gender")) %>%
-  group_by(Age, Gender) %>%
-  count() %>%
-  ggplot( aes(x = Age, y = n, fill = Gender))+
-  geom_bar( data =. %>% filter(Gender == "F"), stat = "identity") +
-  geom_bar( data =. %>% filter(Gender == "M"), stat = "identity") +
-  scale_y_continuous(breaks = seq(-1500, 1500, 500))+
-  coord_flip()
-
-
-                     labels = paste0(as.character(c(seq(1.5, 0, -0.5), seq(0.5, 1.5, 0.5)))))+
-  coord_flip()
-    
-    
-    labels = paste0(as.character(c(seq(1500, 0, -500), seq(500, 1500, 500))), "m")) + 
-  coord_flip()
-
-
-
-
-
 
 ```
-<br/>
-<br/>
-<br/>
-<br/>
-
-
-
-
-
-
