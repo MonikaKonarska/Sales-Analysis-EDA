@@ -37,24 +37,19 @@ visualizeSpineplots <- function(variableX, variableY, dataFrame, pathTosavePlots
   # variableX: name of variable on X axis spineplot
   # variableY: name of variable on Y axis spineplot
   # dataFrame: data frame object
-  
   library(dplyr)
   dataToVisualize <- dataFrame %>% select(c(variableY, variableX)) 
-  
   for (var in c(variableX, variableY)) {
     if(!is.factor(dataToVisualize[[var]])) {
       
       dataToVisualize[[var]] <- factor(dataToVisualize[[var]])
     }
   }
-  
   colors<-grDevices::colors() 
   numberColorsInPlot <- length(levels(dataToVisualize[[variableY]]))
-  
   spineplot(dataToVisualize[[variableY]] ~ dataToVisualize[[variableX]],
                     main = paste("Prefered", variableX,"by", variableY, "Customer"),
                     col  = sample(colors, numberColorsInPlot),
                     xlab = variableX,
                     ylab = variableY )
-  
 }
