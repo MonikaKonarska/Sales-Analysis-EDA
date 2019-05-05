@@ -1,6 +1,6 @@
 ---
 title: "Visualizations - sales data"
-output: html_document
+output: md_document
 always_allow_html: yes
 #output: html_document 
 ---
@@ -248,43 +248,14 @@ ggplot(dataCustomer, aes(numberOfTransactions))+
 <br/>
 <br/>
 
-
 ## Products
 <br/>
 <br/>
 <br/>
-
 ```{r products, echo = FALSE, message = FALSE, warning = FALSE }
-
-kable(data %>%
-        select(c("Product_ID", "Product_Category_1")) %>%
-        dplyr::group_by(Product_Category_1)%>%
-        dplyr::summarize(numberOfProducts = n())%>%
-        mutate(percentage = round(numberOfProducts/sum(numberOfProducts),2))%>%
-        arrange(desc(numberOfProducts)) %>% head(10), format="markdown")  %>%
-  kable_styling( "striped", full_width = FALSE, position = "center") %>%
-  column_spec(c(1, 2, 3), width = "4cm") %>%
-  row_spec(0, bold = TRUE)
-
-kable(data %>%
-        select(c("Product_Category_2","Product_ID")) %>%
-        dplyr:: group_by(Product_Category_2) %>%
-        dplyr:: summarise(numberOfProducts = n()) %>%
-        mutate(percentage = round(numberOfProducts / sum(numberOfProducts),2)) %>%
-        arrange(desc(numberOfProducts)) %>% head(10), format="markdown")%>% 
-  kable_styling( "striped", full_width = FALSE, position = "center") %>%
-  column_spec(c(1, 2, 3), width = "4cm") %>%
-  row_spec(0, bold = TRUE)
-
-kable(data %>%
-        select(c("Product_Category_3","Product_ID")) %>%
-        dplyr:: group_by(Product_Category_3) %>%
-        dplyr:: summarise(numberOfProducts = n()) %>%
-        mutate(percentage = round(numberOfProducts / sum(numberOfProducts),2)) %>%
-        arrange(desc(numberOfProducts)) %>% head(10), format="markdown") %>% 
-  kable_styling( "striped", full_width = FALSE, position = "center") %>%
-  column_spec(c(1, 2, 3), width = "4cm") %>%
-  row_spec(0, bold = TRUE)
+createTableToVisualizeCounts(variableGrouped = "Product_Category_1", dataFrame = data)
+createTableToVisualizeCounts(variableGrouped = "Product_Category_2", dataFrame = data)
+createTableToVisualizeCounts(variableGrouped = "Product_Category_3", dataFrame = data)
 
 colors<-grDevices::colors()
 visualizeSpineplots(variableX = "Product_Category_1", variableY = "Age", dataFrame = data)

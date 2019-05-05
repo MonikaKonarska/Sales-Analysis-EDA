@@ -3,7 +3,7 @@ Data structure
 
 In dataset are 12 columns. The dataset contains different kinds of
 variables - numerical or categorical. I used my function
-`DescribeVariables()` to get more infromations about structure of data.
+`describeVariables()` to get more infromations about structure of data.
 You can find code of this function in script prepare\_data\_func.R  
 Here the results: <br/> <br/>
 
@@ -366,9 +366,6 @@ conver types this variables to factor.
     data$Product_Category_3 <- factor(data$Product_Category_3, levels = sort(unique(data$Product_Category_3)))
     data$Marital_Status     <- factor(data$Marital_Status,     levels = sort(unique(data$Marital_Status)))
 
-
-    save(data, file = file.path(pathData, "data.Rdata"))
-
 <br/> Checking for NA values in columns we can see that the column
 *Product\_Category\_2* is fill by 31% of NA values and the column
 *Product\_Category\_3* is fill by 69% NA values. We have got colum
@@ -406,7 +403,7 @@ Products
 <thead>
 <tr class="header">
 <th align="left">Product_Category_1</th>
-<th align="right">numberOfProducts</th>
+<th align="right">N</th>
 <th align="right">percentage</th>
 </tr>
 </thead>
@@ -468,7 +465,7 @@ Products
 <thead>
 <tr class="header">
 <th align="left">Product_Category_2</th>
-<th align="right">numberOfProducts</th>
+<th align="right">N</th>
 <th align="right">percentage</th>
 </tr>
 </thead>
@@ -530,7 +527,7 @@ Products
 <thead>
 <tr class="header">
 <th align="left">Product_Category_3</th>
-<th align="right">numberOfProducts</th>
+<th align="right">N</th>
 <th align="right">percentage</th>
 </tr>
 </thead>
