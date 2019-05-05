@@ -2,17 +2,14 @@
 describe_variables <- function(data) {
   #Args:
   #data: data frame object
-  
-  if (! is.data.frame(data)) {
+  if (!is.data.frame(data)) {
     stop("Object data is not a data frame.")
   }
-  
   cols <- dim(data)[2]
   rows <- dim(data)[1]
   describeTable <- data.frame(variable = matrix( nrow = cols))
   
   for (var in seq_along(names(data))) {
-    
     var_name <- names(data[var])
     describeTable[var, "variable"]       <- var_name
     describeTable[var, "type"]           <- class(data[[var]])
@@ -25,7 +22,6 @@ describe_variables <- function(data) {
                                                    describeTable[var, "zeros"]/ rows,
                                                    describeTable[var, "zeros"])
   }
-  
   return(describeTable)
 }
 
@@ -38,10 +34,10 @@ visualizeSpineplots <- function(variableX, variableY, dataFrame, pathTosavePlots
   # variableY: name of variable on Y axis spineplot
   # dataFrame: data frame object
   library(dplyr)
-  dataToVisualize <- dataFrame %>% select(c(variableY, variableX)) 
+  dataToVisualize <- dataFrame %>% select(c(variableY, variableX))
+  
   for (var in c(variableX, variableY)) {
     if(!is.factor(dataToVisualize[[var]])) {
-      
       dataToVisualize[[var]] <- factor(dataToVisualize[[var]])
     }
   }
@@ -52,4 +48,26 @@ visualizeSpineplots <- function(variableX, variableY, dataFrame, pathTosavePlots
                     col  = sample(colors, numberColorsInPlot),
                     xlab = variableX,
                     ylab = variableY )
+}
+
+
+createTableToVisualizeCounts <- function(variableGrouped, dataFrame, topN = 10) {
+  # Creates agregating table using kable function from Rmarkdown
+  #
+  # Args:
+  # variableGrouped: name of variable to grouping
+  # dataFrame: data frame object
+  # topN: number of rows in table to show
+  library(dplyr)
+  library(kableExtra)
+  
+  kable(dataFrame %>% select(variableGrouped) %>%
+          dplyr::group_by(.dots = variableGrouped) %>%
+          dplyr::summarize(N = n())%>%
+          mutate(percentage = round(N/sum(N),2)) %>%
+          arrange(desc(N)) %>% head(topN), format="markdown") %>%
+    kable_styling( "striped", full_width = FALSE, position = "center") %>%
+    column_spec(c(1, 2, 3), width = "4cm") %>%
+    row_spec(0, bold = TRUE)
+  
 }
