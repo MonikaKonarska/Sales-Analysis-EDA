@@ -21,7 +21,7 @@ require(mlr)
 library(data.table)
 require(knitr)
 require(kableExtra)
-source("prepare_data_func.R")
+source("functions.R")
 
 ```
 
@@ -67,7 +67,12 @@ data$Product_Category_3 <- factor(data$Product_Category_3, levels = sort(unique(
 data$Marital_Status     <- factor(data$Marital_Status,     levels = sort(unique(data$Marital_Status)))
 
 
-save(data, file = file.path(pathData, "data.Rdata"))
+```
+
+```{r saveRdata, echo = FALSE, message = FALSE, warning = FALSE }
+if(!file.exists(file.path(pathData, "data.Rdata")))
+  save(data, file = file.path(pathData, "data.Rdata"))
+
 ```
 
 <br/>
@@ -98,6 +103,8 @@ dataCustomer <- data %>%
   
 dataCustomer$mostChosenProduct1 <- factor(dataCustomer$mostChosenProduct1, levels = c(1,2,3,4,5,6,7,8,10,11,12,13,15,16,18))
 
+
+save(dataCustomer, file = file.path(pathData, "dataCustomer.Rdata"))
 ```
 <br/>
 <br/>
@@ -284,28 +291,25 @@ kable(data %>%
 
 colors<-grDevices::colors()
 
-with(data,
-     spineplot(x = Product_Category_1, y = Age, main = "Prefered Product Category 1 by Age Cutomer", col = sample(colors, 5)))
+ with(data,
+      spineplot(x = Product_Category_1, y = Age, main = "Prefered Product Category 1 by Age Cutomer", col = sample(colors, 5)))
 
 
-with(data,
-     spineplot(x = Product_Category_1, y = City_Category,
-               main = "Prefered Product Category 1 by City Category", col = sample(colors, 5)))
+ with(data,
+      spineplot(x = Product_Category_1, y = City_Category,
+                main = "Prefered Product Category 1 by City Category", col = sample(colors, 5)))
 
 
-with(data,
-     spineplot(x = Product_Category_1, y = Gender,
-               main = "Prefered Product Category 1 by Gender", col = sample(colors, 5)))
+ with(data,
+      spineplot(x = Product_Category_1, y = Gender,
+                main = "Prefered Product Category 1 by Gender", col = sample(colors, 5)))
 
-with(data,
-     spineplot(x = Product_Category_1, y = Marital_Status,
-               main = "Prefered Product Category 1 by Marital Status", col = sample(colors, 5)))
-
-
-with(data,
-     spineplot(x = Product_Category_1, y = Stay_In_Current_City_Years,
-               main = "Prefered Product Category 1 by Stay_In_Current_City_Years", col = sample(colors, 5)))
+ with(data,
+      spineplot(x = Product_Category_1, y = Marital_Status,
+                main = "Prefered Product Category 1 by Marital Status", col = sample(colors, 5)))
 
 
-
+ with(data,
+      spineplot(x = Product_Category_1, y = Stay_In_Current_City_Years,
+                main = "Prefered Product Category 1 by Stay_In_Current_City_Years", col = sample(colors, 5)))
 ```
