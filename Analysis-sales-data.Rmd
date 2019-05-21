@@ -9,6 +9,7 @@ require(ggplot2)
 require(arules)
 require(arulesViz)
 require(tidyverse)
+require(ca)
 load(file.path(getwd(), "data","data.Rdata"))
 ```
 <br/>
@@ -102,49 +103,27 @@ dataCustomer <- dataCustomer %>%
          purchaseQuantile = purchaseQuantile/1000)
 
 dataCustomer <- dataCustomer %>%
-  mutate(purchaseQuantile = cut(sumOfPurchase, breaks = quantile(dataCustomer$sumOfPurchase, probs = seq(0, 1, 0.25))),
-         purchaseQuantile = case_when(dataCustomer$purchaseQuantile == "(566,6.92e+03]" ~ "566$-6920$",
+  mutate(purchaseQuantile = cut(sumOfPurchase, breaks = quantile(dataCustomer$sumOfPurchase, probs = seq(0, 1, 0.25)), include.lowest = TRUE))
+
+dataCustomer$purchaseQuantile <-  case_when(dataCustomer$purchaseQuantile == "(566,6.92e+03]" ~ "566$-6920$",
                                         dataCustomer$purchaseQuantile == "(6.92e+03,8.6e+03]" ~ "6920$-8600$",
                                         dataCustomer$purchaseQuantile == "(8.6e+03,1.21e+04]" ~ "8600$-12100$",
                                         dataCustomer$purchaseQuantile ==  "(1.21e+04,2.39e+04]" ~ "12100$-23900$",
-                                        TRUE~as.character(dataCustomer$purchaseQuantile))
-           )
+                                        TRUE ~ as.character(dataCustomer$purchaseQuantile))
 
-levels(dataCustomer$purchaseQuantile) <- 
-
-
-dataCustomer$purchaseQuantile <- factor(dataCustomer$purchaseQuantile, levels = c("566$-6920$","6920$-8600$","8600$-12100$","12100$-23900$"))
+dataCustomer$purchaseQuantile <- factor(dataCustomer$purchaseQuantile, levels = sort(unique(dataCustomer$purchaseQuantile)))
 
 
-
-
-
-tab1<-with(daneKlienci,table(Age,PurchaseQuantile))
+tab1 <- with(dataCustomer, table(Age, purchaseQuantile))
 chisq.test(tab1)
 plot(ca(tab1), arrows = c(TRUE, FALSE))
 summary(ca(tab1))
 
 
-tab2<-with(daneKlienci,table(City_Category,PurchaseQuantile ))
+tab2 <- with(dataCustomer, table(City_Category, purchaseQuantile ))
 chisq.test(tab2)
 plot(ca(tab2), arrows = c(TRUE, FALSE))
 summary(ca(tab2))
-
-# zbyt duzo kategorii 
-tab3<-with(daneKlienci,table(City_Category,Occupation ))
-chisq.test(tab3)
-plot(ca(tab3), arrows = c(TRUE, FALSE))
-summary(ca(tab3))
-
-
-tabelaKontyngencji<-with(daneMod,table(Age, Stay_In_Current_City_Years))
-chisq.test(tabelaKontyngencji)
-plot(ca(tabelaKontyngencji), arrows = c(TRUE, FALSE))
-summary(ca(tabelaKontyngencji))
-
-
-
-
 
 
 ```
