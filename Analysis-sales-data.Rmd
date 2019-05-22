@@ -93,6 +93,12 @@ plot(topRules, method="paracoord")
 
 ## <span style="color:blue"> *Correspondence Analysis* </span>
 
+### **Correspondece analysis (CA)** 
+Correspondence analysis is a popular tool for visualizing. This analysis applies to categorical rather than continuous data. This technique s an appropriate technique to explore relationships amongst variable response categories.
+
+It's nedeed to prepare [(contingenty tables)](https://en.wikipedia.org/wiki/Correspondence_analysis).
+
+
 ```{r, tables, echo = TRUE, message = FALSE, warning = FALSE }
 
 load(file.path(getwd(), "data","dataCustomer.Rdata"))
