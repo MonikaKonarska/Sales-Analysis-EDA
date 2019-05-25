@@ -71,3 +71,20 @@ createTableToVisualizeCounts <- function(variableGrouped, dataFrame, topN = 10) 
     row_spec(0, bold = TRUE)
   
 }
+
+changeLabel <- function(label, abbreviateOfMoney = "$") {
+  # Adds abbreviate of currency to character labels 
+  # 
+  # Args:
+  # label: character label 
+  # abbreviateOfMoney: symbol of currency
+  tmp          <- substr(label, start = 2, stop = nchar(label)-1)
+  elements     <- str_split(tmp, pattern = ",")
+  interval1    <- elements[[1]][[1]]
+  interval2    <- elements[[1]][[2]]
+  interval1    <- paste(abbreviateOfMoney, interval1, sep = "")
+  interval2    <- paste(abbreviateOfMoney, interval2, sep = "")
+  changedLabel <- paste0("[",interval1, ", ", interval2, "]")
+  return(changedLabel)
+}
+
