@@ -1,0 +1,18 @@
+---
+title: "Customer segmentation"
+output: md_document
+always_allow_html: yes
+---
+
+
+```{r setup, echo = FALSE, message=FALSE, warning=FALSE}
+library(tidyr)
+library(tidyverse)  
+library(cluster)    
+library(factoextra) 
+
+fileDataName <- "BlackFriday.csv"
+pathData <- file.path(getwd(), "data")
+fileData <- file.path(pathData, fileDataName)
+data <- read.csv(file = fileData, header = TRUE, sep = ",")
+```
