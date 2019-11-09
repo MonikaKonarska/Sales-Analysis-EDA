@@ -2,11 +2,9 @@
 title: "Visualizations - sales data"
 output: md_document
 always_allow_html: yes
-#output: html_document 
 ---
 
 ```{r readLibraries, echo = FALSE, message=FALSE, warning=FALSE }
-
 require(dplyr)
 require(ggplot2)
 require(GGally)
@@ -15,14 +13,11 @@ require(alluvial)
 require(ggalluvial)
 require(arules)
 require(arulesViz)
-require(tidyverse)
 require(ca)
-require(mlr)
 library(data.table)
 require(knitr)
 require(kableExtra)
 source("functions.R")
-
 ```
 
 
