@@ -4,8 +4,8 @@ title: "Customer segmentation"
 output:
   #md_document:
 html_document:
-  number_sections: TRUE
   toc: true
+  number_sections: true
   toc_depth: 2
   highlight: tango
   theme: united
