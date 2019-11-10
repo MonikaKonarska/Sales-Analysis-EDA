@@ -32,7 +32,7 @@ descriptionsFeatures <- describe_variables(data)
 
 ```
 
-# Data structure
+# Data preparation for segmentation analysis
 
 In dataset are 12 columns. The dataset contains different kinds of variables - numerical or categorical.
 I used my function `describeVariables()` to get more infromations about structure of data. You can find code of this function in script prepare_data_func.R  
