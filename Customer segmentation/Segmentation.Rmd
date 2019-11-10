@@ -22,6 +22,7 @@ library(tidyverse)
 library(cluster)    
 library(factoextra)
 library(DT)
+library(cowplot)
 
 set.seed(1234)
 fileDataName <- "BlackFriday.csv"
@@ -116,10 +117,94 @@ optimalNumberClusterplot <- function(data, numberClusters = 15) {
 optimalNumberClusterplot(data = datatoAlgorythmScaled, numberClusters = 15)
 
 ```
+<br>
+<br>
+
+### <em>Results of analysis with 3 and 4 clusters</em> {.tabset .tabset-fade }
+<br>
+<br>
+
+#### 2 clusters
+
+```{r cluster2Information, message = FALSE, warning = FALSE, echo = FALSE}
+clusters2 <- kmeans(datatoAlgorythmScaled, 2, nstart = 25)
+clusters2$centers
+table(clusters2$cluster)
+
+```
+
+#### 3 clusters
+
+```{r cluster3Information, message = FALSE, warning = FALSE, echo = FALSE}
+clusters3 <- kmeans(datatoAlgorythmScaled, 3, nstart = 25)
+clusters3$centers
+table(clusters3$cluster)
+
+```
+
+#### 4 clusters
+
+```{r cluster4Information, message = FALSE, warning = FALSE, echo = FALSE}
+clusters4 <- kmeans(datatoAlgorythmScaled, 4, nstart = 25)
+clusters4$centers
+table(clusters4$cluster)
+
+```
+
+<br>
+<br>
 
 
+## <em>Perform PCA to visualize the clusters</em> 
+  
+PCA 1 and PCA 2 combined explain the majority of the data variance and then there is a drop from PCA 2 to PCA 3.   
+Including more PCA’s after PCA 3 will only result in minimal improvement.
 
 
+```{r clustersAndPca, message = FALSE, warning = FALSE, echo = FALSE}
+pca <- prcomp(t(datatoAlgorythmScaled), scale. = T, center = T)
+
+fviz_eig(pca) +
+  theme_bw() +
+  scale_y_continuous(labels = scales::comma) +
+  ggtitle(label='Principal Component Analysis (PCA)')
+
+```
+ 
+ 
+ - <em>PCA with 2,3 and 4 cluster K-means</em>
+ 
+```{r clustersPlot, message = FALSE, warning = FALSE, echo = FALSE}
+clusterPc2                <- prcomp(datatoAlgorythmScaled, center = FALSE, scale. = FALSE)$x %>% as.data.frame()
+clusterPc2$kmeansCluster  <- factor(clusters2$cluster)
+
+plotClusterPc2 <- ggplot(clusterPc2, aes(x=PC1, y=PC2, color = kmeansCluster))+
+  geom_point()+
+  theme_bw() + scale_y_continuous(labels = scales::comma) +
+  ggtitle(label='PCA with 2 cluster K-means') 
+
+
+clusterPc3                <- prcomp(datatoAlgorythmScaled, center = FALSE, scale. = FALSE)$x %>% as.data.frame()
+clusterPc3$kmeansCluster  <- factor(clusters3$cluster)
+
+plotClusterPc3 <- ggplot(clusterPc3, aes(x=PC1, y=PC2, color = kmeansCluster))+
+  geom_point()+
+  theme_bw() + scale_y_continuous(labels = scales::comma) +
+  ggtitle(label='PCA with 3 cluster K-means') 
+
+
+clusterPc4                <- prcomp(datatoAlgorythmScaled, center = FALSE, scale. = FALSE)$x %>% as.data.frame()
+clusterPc4$kmeansCluster  <- factor(clusters4$cluster)
+
+plotClusterPc4 <- ggplot(clusterPc4, aes(x=PC1, y=PC2, color = kmeansCluster))+
+  geom_point()+
+  theme_bw() + scale_y_continuous(labels = scales::comma) +
+  ggtitle(label='PCA with 4 cluster K-means') 
+
+
+plot_grid(plotClusterPc2, plotClusterPc3, plotClusterPc4)
+
+```
 
 
 
