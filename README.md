@@ -59,3 +59,4 @@ For Business it can be very explanatory and clarifies the way to show a comparis
 * Results of visualizations: [Visualizations.md](Visualizations.md)
 * The code of analysis: [Analysis-sales-data.Rmd](Analysis-sales-data.Rmd)
 * Results of analysis: [Analysis-sales-data.md](Analysis-sales-data.md)
+* Results of segmentation analysis: [Segmentation](http://htmlpreview.github.io/?https://github.com/MonikaKonarska/Sales-Analysis-EDA/blob/master/Customer%20segmentation/Segmentation.html)
