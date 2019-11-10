@@ -5,6 +5,7 @@ output:
   #md_document:
 html_document:
   toc: true
+  toc_float: true
   number_sections: true
   toc_depth: 2
   highlight: tango
@@ -23,7 +24,10 @@ library(cluster)
 library(factoextra)
 library(DT)
 library(cowplot)
+library(kableExtra)
 
+options(kableExtra.html.bsTable = T)
+knitr::opts_chunk$set(echo = FALSE)
 set.seed(1234)
 fileDataName <- "BlackFriday.csv"
 pathData <- file.path(getwd(), "..", "data")
@@ -73,7 +77,9 @@ basketCustomerInformation <- data %>%
                    nBasket = n()) %>%
   left_join(productCategory1Information, by = c("User_ID" = "User_ID")) 
 
-datatable(head(basketCustomerInformation, 6), rownames = FALSE, filter="top", options = list(pageLength = 6, scrollX=T) )
+kable(head(basketCustomerInformation, 6)) %>%
+  kable_styling() %>%
+  scroll_box(width = "100%", height = "300px")
 ```
 
 
@@ -85,10 +91,11 @@ K-means clustering is a very simple and fast algorithm. To use this popular meth
 
 ```{r scaledData, message = FALSE, warning = FALSE, echo = FALSE}
 datatoAlgorythm <- basketCustomerInformation[, which(!names(basketCustomerInformation) %in%  c("User_ID" ,"Gender", "Age", "Occupation", "City_Category","User_ID", "Stay_In_Current_City_Years", "Marital_Status"))]
-
 datatoAlgorythmScaled <- scale(datatoAlgorythm)
 
-datatable(head(datatoAlgorythmScaled, 6), rownames = FALSE, filter="top", options = list(pageLength = 6, scrollX=T) )
+kable(head(datatoAlgorythmScaled, 6)) %>%
+  kable_styling() %>%
+  scroll_box(width = "100%", height = "300px")
 ```
 
 <br>
