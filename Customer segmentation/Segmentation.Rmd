@@ -23,6 +23,7 @@ library(cluster)
 library(factoextra)
 library(DT)
 
+set.seed(1234)
 fileDataName <- "BlackFriday.csv"
 pathData <- file.path(getwd(), "..", "data")
 fileData <- file.path(pathData, fileDataName)
@@ -82,7 +83,6 @@ K-means clustering is a very simple and fast algorithm. To use this popular meth
 <br>
 
 ```{r scaledData, message = FALSE, warning = FALSE, echo = FALSE}
-
 datatoAlgorythm <- basketCustomerInformation[, which(!names(basketCustomerInformation) %in%  c("User_ID" ,"Gender", "Age", "Occupation", "City_Category","User_ID", "Stay_In_Current_City_Years", "Marital_Status"))]
 
 datatoAlgorythmScaled <- scale(datatoAlgorythm)
