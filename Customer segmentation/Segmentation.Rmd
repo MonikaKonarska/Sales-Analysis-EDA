@@ -1,18 +1,96 @@
 ---
 title: "Customer segmentation"
-output: md_document
-always_allow_html: yes
+#output: md_document
+output:
+  #md_document:
+html_document:
+  number_sections: TRUE
+  toc: true
+  toc_depth: 2
+  highlight: tango
+  theme: united
+  always_allow_html: yes
 ---
+The purpose of this analysis is to identify separate groups of clients that show different shopping behaviors. Based on the available data and using some methods is possible to extract some specific customer profiles.   
+
+<strong><em>Algorithms selected</em></strong>: K-means, Principal Component Analysis (PCA)   
 
 
-```{r setup, echo = FALSE, message=FALSE, warning=FALSE}
+```{r setup, echo = FALSE, message = FALSE, warning = FALSE}
 library(tidyr)
 library(tidyverse)  
 library(cluster)    
-library(factoextra) 
+library(factoextra)
+library(DT)
 
 fileDataName <- "BlackFriday.csv"
-pathData <- file.path(getwd(), "data")
+pathData <- file.path(getwd(), "..", "data")
 fileData <- file.path(pathData, fileDataName)
 data <- read.csv(file = fileData, header = TRUE, sep = ",")
 ```
+<br>
+<br>
+
+## <em>Data preparation to segmentation analysis</em>
+
+The data should be prepared. In the beginning, add some new variables about the amount of purchase, product choice.<br>
+The new variables are:
+
+ - minBasket   
+ - avgBasket   
+ - maxBasket   
+ - totalBasket   
+ - nBasket   
+ - the amout of purchase each product of category number one (`totalCategory1`, `totalCategory2` ...) 
+
+The data is aggregated by the column assigned `User_ID`.
+<br>
+<br>
+
+```{r prepareData, message = FALSE, warning = FALSE, echo = FALSE}
+productCategory1Information <- data %>%
+  filter(is.na(Product_Category_2)) %>%
+  filter(is.na(Product_Category_3)) %>%
+  select(User_ID, Product_Category_1, Purchase) %>%
+  group_by(User_ID, Product_Category_1) %>%
+  summarise(totalBasketProduct1 = sum(Purchase)) %>%
+  mutate(Product_Category_1 = as.factor(Product_Category_1)) %>%
+  spread(Product_Category_1, totalBasketProduct1) %>%
+  replace(is.na(.), 0) %>%
+  rename_if(grepl("[0-9]+", colnames(.)), funs(paste0("totalCategory", .)))
+
+basketCustomerInformation <- data %>%
+  filter(is.na(Product_Category_2)) %>%
+  filter(is.na(Product_Category_3)) %>%
+  select(-c("Product_ID","Product_Category_1","Product_Category_2","Product_Category_3")) %>%
+  group_by(User_ID, Gender, Age, Occupation, City_Category, Stay_In_Current_City_Years, Marital_Status) %>%
+  dplyr::summarise(minBasket = min(Purchase),
+                   avgBasket = round(mean(Purchase),2),
+                   maxBasket = max(Purchase),
+                   totalBasket = sum(Purchase),
+                   nBasket = n()) %>%
+  left_join(productCategory1Information, by = c("User_ID" = "User_ID")) 
+
+datatable(basketCustomerInformation, rownames = FALSE, filter="top", options = list(pageLength = 6, scrollX=T) )
+```
+
+
+## <em>K-means</em>
+
+K-means clustering is a very simple and fast algorithm. To use this popular method for customer segmentation is needed to use only numerical data. The data must be scaled.
+<br>
+<br>
+
+```{r scaledData, message = FALSE, warning = FALSE, echo = FALSE}
+
+datatoAlgorythm <- basketCustomerInformation[, which(!names(basketCustomerInformation) %in%  c("User_ID" ,"Gender", "Age", "Occupation", "City_Category","User_ID", "Stay_In_Current_City_Years", "Marital_Status"))]
+
+datatoAlgorythmScaled <- scale(datatoAlgorythm)
+
+datatable(datatoAlgorythmScaled, rownames = FALSE, filter="top", options = list(pageLength = 6, scrollX=T) )
+```
+
+<br>
+<br>
+
+
