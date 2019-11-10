@@ -73,7 +73,7 @@ basketCustomerInformation <- data %>%
                    nBasket = n()) %>%
   left_join(productCategory1Information, by = c("User_ID" = "User_ID")) 
 
-datatable(basketCustomerInformation, rownames = FALSE, filter="top", options = list(pageLength = 6, scrollX=T) )
+datatable(head(basketCustomerInformation, 6), rownames = FALSE, filter="top", options = list(pageLength = 6, scrollX=T) )
 ```
 
 
@@ -88,7 +88,7 @@ datatoAlgorythm <- basketCustomerInformation[, which(!names(basketCustomerInform
 
 datatoAlgorythmScaled <- scale(datatoAlgorythm)
 
-datatable(datatoAlgorythmScaled, rownames = FALSE, filter="top", options = list(pageLength = 6, scrollX=T) )
+datatable(head(datatoAlgorythmScaled, 6), rownames = FALSE, filter="top", options = list(pageLength = 6, scrollX=T) )
 ```
 
 <br>
