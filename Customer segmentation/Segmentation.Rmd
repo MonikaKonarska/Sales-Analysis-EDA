@@ -93,4 +93,33 @@ datatable(datatoAlgorythmScaled, rownames = FALSE, filter="top", options = list(
 <br>
 <br>
 
+### <em>To define an optimal number of clusters</em>
+
+ - Elbow method   
+The elbow method looks at the percentage of variance explained as a function of the number of clusters. <br>
+The second cluster will add much information (explain a lot of variances).<br>
+K=3 should be a good choice for number of clusters however k=4 also seems to be a potential candidate. 
+ 
+
+```{r numberClusters, message = FALSE, warning = FALSE, echo = FALSE}
+
+optimalNumberClusterplot <- function(data, numberClusters = 15) {
+  wss <- (nrow(data)- 1)*sum(apply(data, 2, var))
+  for (i in 2:numberClusters) {
+    set.seed(1234)
+    wss[i] <- sum(kmeans(data, centers=i)$withinss)}
+  
+  plot(1:numberClusters, wss, type = "b", xlab = "Number of clusters K",
+       ylab="Total within-clusters sum of squares")
+  }
+
+optimalNumberClusterplot(data = datatoAlgorythmScaled, numberClusters = 15)
+
+```
+
+
+
+
+
+
 
