@@ -1,5 +1,5 @@
-Data structure
-==============
+Data preparation for segmentation analysis
+==========================================
 
 In dataset are 12 columns. The dataset contains different kinds of
 variables - numerical or categorical. I used my function
