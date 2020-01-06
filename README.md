@@ -16,12 +16,12 @@ The purpose of this project is use posibilities of programming in R to vizualize
 This project will focus on a step by step visualisations and get more informations about behaviours customers.
 
 
-### Methods Used
+### Methods used:
 
-- Classification problem
-- Correspondence analysis
-- Apriori analysis
-- Data Visualization
+- Principal Component Analysis (PCA),
+- K-means,
+- Apriori analysis,
+- Exploratory Data Analysis.
 
 
 ### Technologies :computer:
@@ -48,15 +48,20 @@ Graphs and charts present a huge amount of information into simple and easy to u
 For Business it can be very explanatory and clarifies the way to show a comparison, relationships or highlight a trend in data.    
 
 
+## Results
+
+* Results of visualizations: [Visualizations.md](Visualizations.md)
+
+* Results of analysis: [Analysis-sales-data.md](Analysis-sales-data.md)
+
+* Results of segmentation analysis: [Segmentation](http://htmlpreview.github.io/?https://github.com/MonikaKonarska/Sales-Analysis-EDA/blob/master/Customer%20segmentation/Segmentation.html)
+
+
+
+
+
 ### How to run ?
 
 1. Clone this repo [(some tips here)](https://happygitwithr.com/rstudio-git-github.html#clone-the-new-github-repository-to-your-computer-via-rstudio) 
 2. Raw data is being kept within this repo [here](data/BlackFriday.csv)
 
-
-
-* The code of data transformations and plots: [Visualizations.Rmd](Visualizations.Rmd)
-* Results of visualizations: [Visualizations.md](Visualizations.md)
-* The code of analysis: [Analysis-sales-data.Rmd](Analysis-sales-data.Rmd)
-* Results of analysis: [Analysis-sales-data.md](Analysis-sales-data.md)
-* Results of segmentation analysis: [Segmentation](http://htmlpreview.github.io/?https://github.com/MonikaKonarska/Sales-Analysis-EDA/blob/master/Customer%20segmentation/Segmentation.html)
