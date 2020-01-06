@@ -50,11 +50,11 @@ For Business it can be very explanatory and clarifies the way to show a comparis
 
 ## Results
 
-* Results of visualizations: [Visualizations.md](Visualizations.md)
+* [Results of visualizations](https://github.com/MonikaKonarska/Sales-Analysis-EDA/tree/master/Visualizations)
 
-* Results of analysis: [Analysis-sales-data.md](Analysis-sales-data.md)
+* [Results of analysis](https://github.com/MonikaKonarska/Sales-Analysis-EDA/tree/master/Analysis%20sales)
 
-* Results of segmentation analysis: [Segmentation](http://htmlpreview.github.io/?https://github.com/MonikaKonarska/Sales-Analysis-EDA/blob/master/Customer%20segmentation/Segmentation.html)
+* [Results of segmentation analysis](https://github.com/MonikaKonarska/Sales-Analysis-EDA/tree/master/Customer%20segmentation)
 
 
 
