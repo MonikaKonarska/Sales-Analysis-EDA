@@ -17,19 +17,17 @@ require(ca)
 library(data.table)
 require(knitr)
 require(kableExtra)
-source("functions.R")
+source(file = file.path(getwd(), "..", "functions","functions.R"))
 ```
 
 
 ```{r readData, echo = FALSE, message = FALSE, warning = FALSE }
-
 fileDataName <- "BlackFriday.csv"
-pathData <- file.path(getwd(), "data")
+pathData <- file.path(getwd(), "..","data")
 fileData <- file.path(pathData, fileDataName)
 
 data <- read.csv(file = fileData, header = TRUE, sep = ",")
 descriptionsFeatures <- describe_variables(data)
-
 ```
 
 # Data preparation for segmentation analysis
@@ -46,6 +44,8 @@ kable(descriptionsFeatures, booktabs = T, caption = "Table 1: Structure of data"
   kable_styling(latex_options = c("striped", "hold_position")) %>%
   column_spec(1, width = "8cm", color = "red", bold = TRUE) %>%
   row_spec(0, bold = TRUE)
+
+
 
 ```
 <br/>
