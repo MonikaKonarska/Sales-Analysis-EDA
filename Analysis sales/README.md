@@ -160,12 +160,12 @@ This measure shows how one item (Product1) effects the onther item
     ## Absolute minimum support count: 23 
     ## 
     ## set item appearances ...[0 item(s)] done [0.00s].
-    ## set transactions ...[3623 item(s), 5891 transaction(s)] done [0.22s].
-    ## sorting and recoding items ... [2593 item(s)] done [0.01s].
+    ## set transactions ...[3623 item(s), 5891 transaction(s)] done [0.25s].
+    ## sorting and recoding items ... [2593 item(s)] done [0.02s].
     ## creating transaction tree ... done [0.00s].
-    ## checking subsets of size 1 2 3 done [9.51s].
+    ## checking subsets of size 1 2 3 done [10.48s].
     ## writing ... [6079 rule(s)] done [0.92s].
-    ## creating S4 object  ... done [0.22s].
+    ## creating S4 object  ... done [0.18s].
 
 #### **Results**
 
