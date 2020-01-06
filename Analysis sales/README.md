@@ -160,12 +160,12 @@ This measure shows how one item (Product1) effects the onther item
     ## Absolute minimum support count: 23 
     ## 
     ## set item appearances ...[0 item(s)] done [0.00s].
-    ## set transactions ...[3623 item(s), 5891 transaction(s)] done [0.21s].
-    ## sorting and recoding items ... [2593 item(s)] done [0.02s].
+    ## set transactions ...[3623 item(s), 5891 transaction(s)] done [0.22s].
+    ## sorting and recoding items ... [2593 item(s)] done [0.01s].
     ## creating transaction tree ... done [0.00s].
-    ## checking subsets of size 1 2 3 done [9.12s].
-    ## writing ... [6079 rule(s)] done [0.91s].
-    ## creating S4 object  ... done [0.18s].
+    ## checking subsets of size 1 2 3 done [9.51s].
+    ## writing ... [6079 rule(s)] done [0.92s].
+    ## creating S4 object  ... done [0.22s].
 
 #### **Results**
 
@@ -207,3 +207,108 @@ The Scatter plot rules shows that rules with hight *lift* have low
 ![](Analysis-sales-data_files/figure-markdown_strict/visual-1.png) <br/>
 
 ![](Analysis-sales-data_files/figure-markdown_strict/graph-1.png)![](Analysis-sales-data_files/figure-markdown_strict/graph-2.png)
+
+<span style="color:blue"> *Correspondence Analysis* </span>
+-----------------------------------------------------------
+
+### **Correspondece analysis (CA)**
+
+Correspondence analysis is a popular tool for visualizing. This analysis
+applies to categorical rather than continuous data. This technique s an
+appropriate technique to explore relationships amongst variable response
+categories.
+
+It's nedeed to prepare [(contingenty
+tables)](https://en.wikipedia.org/wiki/Correspondence_analysis).
+
+    load(file.path(getwd(), "..", "data","dataCustomer.Rdata"))
+
+    dataCustomer <- dataCustomer %>% as.data.frame()%>%
+      select(c("Gender", "Age", "Occupation", "City_Category", "Stay_In_Current_City_Years", "Marital_Status", "sumOfPurchase"))%>%
+      mutate(sumOfPurchase = sumOfPurchase/1000,
+        purchaseQuantile = cut(sumOfPurchase,
+                               breaks = quantile(sumOfPurchase, probs = seq(0, 1, 0.25)),
+                               include.lowest = TRUE))
+
+    levels(dataCustomer$purchaseQuantile) <- c("(0-235$]", "(235$-513$]", "(513,1$-1100$]", "(1100$-]")
+
+    tab1 <- with(dataCustomer, table(Age, purchaseQuantile))
+    chisq.test(tab1)
+
+    ## 
+    ##  Pearson's Chi-squared test
+    ## 
+    ## data:  tab1
+    ## X-squared = 129.75, df = 18, p-value < 2.2e-16
+
+    plot(ca(tab1), arrows = c(TRUE, FALSE))
+
+![](Analysis-sales-data_files/figure-markdown_strict/tables-1.png)
+
+    summary(ca(tab1))
+
+    ## 
+    ## Principal inertias (eigenvalues):
+    ## 
+    ##  dim    value      %   cum%   scree plot               
+    ##  1      0.020496  93.1  93.1  ***********************  
+    ##  2      0.000946   4.3  97.4  *                        
+    ##  3      0.000583   2.6 100.0  *                        
+    ##         -------- -----                                 
+    ##  Total: 0.022025 100.0                                 
+    ## 
+    ## 
+    ## Rows:
+    ##     name   mass  qlt  inr    k=1 cor ctr    k=2 cor ctr  
+    ## 1 |  017 |   37  993  118 | -257 940 119 |   61  53 146 |
+    ## 2 | 1825 |  181  941   10 |   14 157   2 |   31 784 182 |
+    ## 3 | 2635 |  348  980  277 |  130 973 289 |  -11   7  45 |
+    ## 4 | 3645 |  198  451   26 |   27 257   7 |  -23 195 115 |
+    ## 5 | 4650 |   90  995   81 | -134 913  79 |   40  82 154 |
+    ## 6 | 5155 |   82  918   30 |  -84 878  28 |   18  39  27 |
+    ## 7 |   55 |   63  994  459 | -393 963 476 |  -70  31 329 |
+    ## 
+    ## Columns:
+    ##     name   mass  qlt  inr    k=1 cor ctr    k=2 cor ctr  
+    ## 1 | 0235 |  250  980  278 | -152 940 281 |  -31  41 262 |
+    ## 2 | 2355 |  250  842  108 |  -89 839  97 |    6   4  10 |
+    ## 3 | 5131 |  250  879   32 |   16  87   3 |   48 792 599 |
+    ## 4 | 1100 |  250 1000  582 |  225 990 619 |  -22  10 130 |
+
+    tab2 <- with(dataCustomer, table(City_Category, purchaseQuantile ))
+    chisq.test(tab2)
+
+    ## 
+    ##  Pearson's Chi-squared test
+    ## 
+    ## data:  tab2
+    ## X-squared = 743.48, df = 6, p-value < 2.2e-16
+
+    plot(ca(tab2), arrows = c(TRUE, FALSE))
+
+![](Analysis-sales-data_files/figure-markdown_strict/tables-2.png)
+
+    summary(ca(tab2))
+
+    ## 
+    ## Principal inertias (eigenvalues):
+    ## 
+    ##  dim    value      %   cum%   scree plot               
+    ##  1      0.125793  99.7  99.7  *************************
+    ##  2      0.000413   0.3 100.0                           
+    ##         -------- -----                                 
+    ##  Total: 0.126206 100.0                                 
+    ## 
+    ## 
+    ## Rows:
+    ##     name   mass  qlt  inr    k=1  cor ctr    k=2 cor ctr  
+    ## 1 |    A |  177 1000  111 |  278  979 109 |   41  21 714 |
+    ## 2 |    B |  290 1000  433 |  434  998 434 |  -20   2 277 |
+    ## 3 |    C |  533 1000  456 | -329 1000 457 |   -3   0  10 |
+    ## 
+    ## Columns:
+    ##     name   mass  qlt  inr    k=1  cor ctr    k=2 cor ctr  
+    ## 1 | 0235 |  250 1000  191 | -309  994 190 |   25   6 376 |
+    ## 2 | 2355 |  250 1000   76 | -194  974  74 |  -32  26 610 |
+    ## 3 | 5131 |  250 1000   19 |  -98  999  19 |    4   1   8 |
+    ## 4 | 1100 |  250 1000  714 |  600 1000 717 |    3   0   6 |
