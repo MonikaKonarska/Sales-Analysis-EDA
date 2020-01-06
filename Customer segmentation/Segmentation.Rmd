@@ -12,8 +12,8 @@ html_document:
   theme: united
   always_allow_html: yes
 ---
-The purpose of this analysis is to identify separate groups of clients that show different shopping behaviors. Based on the available data and using some methods is possible to extract some specific customer profiles.   
-
+The purpose of this analysis is to identify separate groups of clients that show different shopping behaviors. Based on the available data and using some methods is possible to extract some specific customer profiles.<p>  
+Customer segmentation is the process of dividing customers into groups based upon certain boundaries; clustering is one way to generate these boundaries. 
 <strong><em>Algorithms selected</em></strong>: K-means, Principal Component Analysis (PCA)   
 
 
@@ -79,7 +79,7 @@ basketCustomerInformation <- data %>%
 
 kable(head(basketCustomerInformation, 6)) %>%
   kable_styling() %>%
-  scroll_box(width = "100%", height = "300px")
+  scroll_box(width = "100%", height = "250px")
 ```
 
 
@@ -95,7 +95,7 @@ datatoAlgorythmScaled <- scale(datatoAlgorythm)
 
 kable(head(datatoAlgorythmScaled, 6)) %>%
   kable_styling() %>%
-  scroll_box(width = "100%", height = "300px")
+  scroll_box(width = "100%", height = "250px")
 ```
 
 <br>
@@ -212,6 +212,100 @@ plotClusterPc4 <- ggplot(clusterPc4, aes(x=PC1, y=PC2, color = kmeansCluster))+
 plot_grid(plotClusterPc2, plotClusterPc3, plotClusterPc4)
 
 ```
+
+```{r }
+
+fviz_cluster(clusters3, data = datatoAlgorythmScaled, geom = "point", stand = FALSE, ellipse.type = "norm") + 
+  theme_bw() +
+  scale_y_continuous(labels = scales::comma) +
+  ggtitle(label='Customer Clusters')
+
+head(gather(data.frame(datatoAlgorythmScaled[clusters3$cluster == 1,])))
+
+tmp <- aggregate(datatoAlgorythmScaled, by = list(clusters3$cluster), mean)
+
+
+
+daneBeh <- basketCustomerInformation
+daneBeh$cluster <- factor(clusters3$cluster)
+
+daneSegent <- daneBeh %>%
+   select(c("cluster" ,"minBasket","maxBasket","totalBasket", "nBasket", "Gender", "Age", "Stay_In_Current_City_Years", "Marital_Status")) %>%
+   group_by(cluster,Gender, Age, Stay_In_Current_City_Years, Marital_Status) %>%
+   summarise(avgminBasket = mean(minBasket),
+             avgmaxBasket = mean(maxBasket),
+             avgtotalBasket = mean(totalBasket),
+             avgnBasket = mean(nBasket))
+
+ggplot(daneSegent, aes(x=Marital_Status, y=avgminBasket, fill=cluster)) +
+  geom_bar(stat = 'identity')
+
+daneBeh$totalCat1 <- daneBeh[,13]
+
+daneBeh %>%
+   select(cluster ,minBasket,maxBasket,totalBasket, nBasket, totalCat1) %>%
+   group_by(cluster) %>%
+   summarise(avgminBasket = mean(minBasket),
+             avgmaxBasket = mean(maxBasket),
+             avgtotalBasket = mean(totalBasket),
+             avgnBasket = mean(nBasket))+
+  ggplot(aes(x=Gender, y=avgminBasket, fill=cluster)) +
+  geom_bar(stat = 'identity')
+
+
+
+
+
+ggplot(daneBeh, aes(x=cluster, y=avgBasket, fill=cluster)) +  geom_violin()
+ggplot(daneBeh, aes(x=cluster, y=maxBasket, fill=cluster)) +  geom_violin()
+
+
+ggplot(daneBeh, aes(x=Age, fill = cluster)) +
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))+
+  facet_grid(~cluster)
+
+
+
+
+
+ggplot(daneBeh, aes(Age))+
+  geom_bar(daneBeh, aes(fill = cluster))
+
+
+```
+
+
+
+
+```{r x}
+library(DataExplorer)
+plot_str(daneBeh)
+plot_str(daneBeh, type = "r")
+introduce(daneBeh)
+plot_intro(daneBeh)
+plot_intro(basketCustomerInformation)
+plot_missing(basketCustomerInformation)
+plot_bar(basketCustomerInformation)
+plot_histogram(basketCustomerInformation)
+
+plot_correlation(na.omit(basketCustomerInformation), maxcat = 5L)
+
+create_report(final_data)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
